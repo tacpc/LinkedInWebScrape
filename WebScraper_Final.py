@@ -21,7 +21,7 @@ def load_page(wd):
 
 def get_jobs(wd):
     job_list = wd.find_element_by_class_name('jobs-search__results-list')
-    jobs = job_list.find_elements_by_tag_name('li')
+    jobs = job_list.find_elements_by_class_name('base-card base-card--link base-search-card base-search-card--link job-search-card job-search-card--active')
 
     return jobs
 
