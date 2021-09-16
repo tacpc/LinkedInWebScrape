@@ -2,6 +2,12 @@ import pandas as pd
 import time
 import random
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+""" 
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+"""
 
 def load_page(wd):
     number_of_vagas = int(wd.find_element_by_css_selector('span.results-context-header__job-count').text)
@@ -37,31 +43,35 @@ def get_job_details(jobs):
             job_title.append(job.find_element_by_class_name('base-search-card__title').text)
         except:
             pass
-            job_date.append('None')
+            job_title.append('None')
         
         try:
             job_company_name.append(job.find_element_by_class_name('base-search-card__subtitle').text)
         except:
             pass
-            job_date.append('None')
+            job_company_name.append('None')
         
         try:
             job_location.append(job.find_element_by_class_name('job-search-card__location').text)
         except:
             pass
-            job_date.append('None')
+            job_location.append('None')
         
         try:
             job_date.append(job.find_element_by_class_name('job-search-card__listdate').text)
         except:
-            pass
-            job_date.append('None')
+            try:
+                job_date.append(job.find_element_by_class_name('job-search-card__listdate--new').text)
+            except:
+                job_date.append('None')
         
         try:
             job_link.append(job.find_element_by_class_name('base-card__full-link').get_attribute('href'))
         except:
-            pass
-            job_date.append('None')
+            try:
+                job_link.append(job.find_element_by_tag_name('a').get_attribute('href'))
+            except:
+                job_link.append('None')
     
     return job_title, job_company_name, job_location, job_date, job_link
 
@@ -80,6 +90,8 @@ if __name__ == '__main__':
 
     print('job_title: ' + str(len(job_title)))
     print('job_company_name: ' + str(len(job_company_name)))
-    print('jjob_location: ' + str(len(job_location)))
+    print('job_location: ' + str(len(job_location)))
     print('job_date: ' + str(len(job_date)))
     print('job_link: ' + str(len(job_link)))
+
+    wd.quit()
