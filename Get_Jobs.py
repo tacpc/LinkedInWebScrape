@@ -51,7 +51,10 @@ if __name__ == '__main__':
     WS.wd_quit()
 
     locale.setlocale(locale.LC_TIME, "pt_PT.UTF-8")
-    today_date = datetime.today().strftime('%d-%m-%Y')
-    output_file_name = name +' ' + location + ' ' + today_date + '.csv'
+    today_date = datetime.today().strftime('%Y-%m-%d')
+    output_file_name = today_date +'_' + name + '_' + location + '.csv'
     output_file_name = output_file_name.replace('"', '')
+    output_file_name = output_file_name.replace(', ', '-')
+    output_file_name = 'Scraped_Data/'+ output_file_name
+    
     data_to_csv(job_title, job_company_name, job_location, job_date, job_link, custom_name=output_file_name)
