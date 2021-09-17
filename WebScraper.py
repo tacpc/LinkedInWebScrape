@@ -17,6 +17,13 @@ class LinkedIn_WebScraper:
         self.wd = webdriver.Chrome(executable_path=self.chromedriver_loc)
         self.wd.get(self.url)
         self.wd.maximize_window()
+
+        self.load_page()
+        self.get_jobs()
+        job_title, job_company_name, job_location, job_date, job_link = self.get_job_details()
+
+        return job_title, job_company_name, job_location, job_date, job_link
+
     
     def load_page(self):
         number_of_vagas = int(self.wd.find_element_by_css_selector('span.results-context-header__job-count').text)

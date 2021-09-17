@@ -1,5 +1,21 @@
+import json
 import pandas as pd
+from datetime import datetime
+import locale
 from WebScraper import LinkedIn_WebScraper
+
+def get_search_criteria():
+    with open("search_criteria.json", "r") as f:
+        search_criteria = json.load(f)
+    return search_criteria
+
+def parse_job_name(name):
+    name = name.replace(' ', '%20')
+    return name
+
+def parse_job_location(location):
+    location = location.replace(', ', '%2C%20')
+    return location
 
 def data_to_csv(job_title, job_company_name, job_location, job_date, job_link, custom_encoding = 'UTF-8', custom_name='exported_data.csv'):
     all_data = pd.DataFrame({'Title': job_title,
@@ -11,16 +27,20 @@ def data_to_csv(job_title, job_company_name, job_location, job_date, job_link, c
 
     all_data.to_csv(custom_name, index=False ,header=True, sep=';', encoding=custom_encoding)
     
-if __name__ == '__main__':    
-    url = 'https://pt.linkedin.com/jobs/search?keywords=Data%20Analyst&location=Lisboa%2C%20Portugal'
+if __name__ == '__main__':
+    search_criteria = get_search_criteria()
+
+    name = search_criteria["job"]
+    location = search_criteria["location"]
+
+    job_search_name = parse_job_name(name)
+    job_search_location = parse_job_location(location)
+
+    url = 'https://pt.linkedin.com/jobs/search?keywords={}&location={}'.format(job_search_name, job_search_location)
     chromedriver_loc='C:/Users/Tiago/Desktop/PostgreSQL Python/LinkedInWebScrape/.driver/chromedriver.exe'
 
     WS = LinkedIn_WebScraper(url, chromedriver_loc)
-    WS.run()
-    WS.load_page()
-    WS.get_jobs()
-
-    job_title, job_company_name, job_location, job_date, job_link = WS.get_job_details()
+    job_title, job_company_name, job_location, job_date, job_link = WS.run()
 
     print('job_title: ' + str(len(job_title)))
     print('job_company_name: ' + str(len(job_company_name)))
@@ -30,5 +50,8 @@ if __name__ == '__main__':
 
     WS.wd_quit()
 
-    data_to_csv(job_title, job_company_name, job_location, job_date, job_link)
-#-----------------------------------------------------------------------------------#
+    locale.setlocale(locale.LC_TIME, "pt_PT.UTF-8")
+    today_date = datetime.today().strftime('%d-%m-%Y')
+    output_file_name = name +' ' + location + ' ' + today_date + '.csv'
+    output_file_name = output_file_name.replace('"', '')
+    data_to_csv(job_title, job_company_name, job_location, job_date, job_link, custom_name=output_file_name)
