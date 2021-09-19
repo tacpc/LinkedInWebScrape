@@ -1,0 +1,19 @@
+{
+    "all_searches":[
+        {"job": "\"Reporting Analyst\"",
+        "location": "Lisboa, Portugal"
+        },
+        {"job": "Analista",
+        "location": "Lisboa, Portugal"
+            },
+        {"job": "\"Business Analyst\"",
+        "location": "Lisboa, Portugal"
+        },
+        {"job": "\"Data Analyst\"",
+        "location": "Lisboa, Portugal"
+        },
+        {"job": "\"Data Reporting\"",
+        "location": "Lisboa, Portugal"
+        }
+    ]
+}
