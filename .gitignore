@@ -130,4 +130,6 @@ dmypy.json
 
 # Personal Data
 Scraped_Data/*
+Scraped_Data/Merged_Data/*
 !Scraped_Data/.gitkeep
+!Scraped_Data/Merged_Data/.gitkeep
